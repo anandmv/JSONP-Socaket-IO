@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Chat Application</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="http://localhost:8080/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('http://localhost:8080');
+//Receive data from socket
+   socket.on('chat', function (data) {
+    console.log(data);
+	$("#chatmsg").append(data.msg);
+   
+  });
+  //send data to socket
+ function senderr()
+ { 
+ var chatter=$("#chatter").val()+"<br/>";
+	  if(chatter!=null)
+	  {
+		  $("#chatmsg").append(chatter);
+	   socket.emit('chat', { msg: chatter });
+	  }
+	   console.log("send  "+chatter)
+ }
+ function clickEnter(e)
+ {
+	  if(e.which == 13) {
+		   senderr();
+	  }
+ }
+ 
+</script>
+</head>
+
+<body>
+<div id="chatmsg" ></div><br/>
+<input id="chatter" type="text"  onkeypress="clickEnter(event)" size="40"/>
+<input type="submit"  id="chat_send"  onclick="senderr()" value="SEND"/>
+<br/>
+
+</body></html>
